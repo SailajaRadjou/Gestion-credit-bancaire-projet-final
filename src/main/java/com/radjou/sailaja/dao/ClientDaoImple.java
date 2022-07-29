@@ -9,6 +9,7 @@ import com.radjou.sailaja.metier.Client;
 
 public class ClientDaoImple implements IClientDao{
 	Client client;
+	
 	Connection conn = SingletonConnection.getConnection();
 	@Override
 	public Client save(Client c) {
@@ -56,6 +57,7 @@ public class ClientDaoImple implements IClientDao{
 		try {
 			PreparedStatement pStmt = conn.prepareStatement("update client set nom = ?, prenom = ?, date_naissance = ?, adresse = ?, tel = ?, mail = ?, civilite = ? where id = ?");
 			
+			//get the values of the object & set it in the query in given order 
 			pStmt.setInt(8, c.getId());
 			pStmt.setString(1, c.getNom());
 			pStmt.setString(2, c.getPrenom());
@@ -65,9 +67,12 @@ public class ClientDaoImple implements IClientDao{
 			pStmt.setString(6, c.getMail());
 			pStmt.setString(7, c.getCivilite());
 			
+			//execute query in the prepared statement
 			pStmt.executeUpdate();
 			System.out.println("Updated Successfully....");
 			pStmt.close();
+			
+			//return the updated object
 			return this.find(c.getId());
 			
 		} catch (Exception e) {
@@ -76,6 +81,7 @@ public class ClientDaoImple implements IClientDao{
 		return null;
 	}
 
+	//delete
 	@Override
 	public int delete(Client c) {
 		int res;
@@ -95,6 +101,7 @@ public class ClientDaoImple implements IClientDao{
 		return 0;
 	}
 
+	//get all clients
 	@Override
 	public ArrayList<Client> getAll() {
 		

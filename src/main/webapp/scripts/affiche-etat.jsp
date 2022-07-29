@@ -1,7 +1,7 @@
 <script type="text/javascript">
       
 			const elmts = document.querySelectorAll('.etat');			
-			
+			//giving colors by adding corresponding class to the corresponding values
 			for (const elmt of elmts) {
 						  
 			  if(elmt.textContent == "En attente")

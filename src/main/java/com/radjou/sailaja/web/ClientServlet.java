@@ -220,6 +220,7 @@ public class ClientServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	//method for getting particular value in the cookie
 	private String getCookie(Cookie[] cookies) {
 		for (Cookie c : cookies) {
 			if(c.getName().equals("username"))
@@ -230,6 +231,8 @@ public class ClientServlet extends HttpServlet {
 		
 	}
 	/******************				Employee			**********************/
+	
+	//inserting values in the database
 	private void saveEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String uname = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -240,10 +243,16 @@ public class ClientServlet extends HttpServlet {
 		employee = empDaoImpl.save(employee);
 		request.setAttribute("employee", employee);
 		
+		//retrieving cookies 
 		Cookie cookies[] = request.getCookies();
+		//calling functions for getting particular cookies
 		getCookie(cookies);
+		
+		//setting username received from getCookie()
 		request.setAttribute("username", username);
-		status = empDaoImpl.find(username);		
+		//to get status of the particular user who logged in
+		status = empDaoImpl.find(username);	
+		
 		request.setAttribute("status", status);
 		
 		request.getRequestDispatcher("confirmation-employee.jsp").forward(request, response);
@@ -255,14 +264,16 @@ public class ClientServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		employee = empDaoImpl.find(username, password);
 		status = empDaoImpl.find(username);
-		cookie = new Cookie("username", username);
 		
+		//creating cookie object
+		cookie = new Cookie("username", username);
+		//adding cookie in the response  
 		response.addCookie(cookie);
+		
 		if(employee == null) {
 			String msg = "Enter correct username & password";
 			request.setAttribute("message", msg);
-			request.getRequestDispatcher("login.jsp").forward(request, response);
-		
+			request.getRequestDispatcher("login.jsp").forward(request, response);		
 		}
 		else {
 			request.setAttribute("username", username);
@@ -272,10 +283,14 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void listEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//retrieving cookies 
 		Cookie cookies[] = request.getCookies();
+		//calling functions for getting particular cookies
 		getCookie(cookies);
+		//setting username received from getCookie()
 		request.setAttribute("username", username);
-		status = empDaoImpl.find(username);		
+		//to get status of the particular user who logged in
+		status = empDaoImpl.find(username);			
 		request.setAttribute("status", status);
 		
 		employees = empDaoImpl.getAll();
@@ -460,6 +475,7 @@ public class ClientServlet extends HttpServlet {
 		String prenom = request.getParameter("prenom");
 		clients = cDaoImple.getAll(nom, prenom);
 		
+		//checking whether data exist or not 
 		if(clients.isEmpty()) {
 			String msg = "Client Not Exist !";
 			request.setAttribute("message", msg);
@@ -483,7 +499,7 @@ public class ClientServlet extends HttpServlet {
 	/******************				COMPTE				**********************/
 	
 	private void findCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		//retrieving cookies 
 		Cookie cookies[] = request.getCookies();
 		getCookie(cookies);
 		request.setAttribute("username", username);
@@ -497,6 +513,8 @@ public class ClientServlet extends HttpServlet {
 		c = cDaoImple.find(id);
 		System.out.println(c);
 		comptes = cmpdi.getAll(id);
+		
+		//checking whether entered client has a account or not
 		if (comptes.isEmpty()) {
 			String msg = "Le Compte n'existe pas pour ce client !";
 			request.setAttribute("message", msg);

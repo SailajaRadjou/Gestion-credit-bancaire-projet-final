@@ -37,8 +37,8 @@
 		  <div class="col-md-6">
 				<label for="inputStatus" class="form-label">Status</label>
 				<select	id="inputStatus" class="form-select" name="status">
-					<option value="En attente" selected>0</option>					
-					<option value="Acceptée" disabled>1</option>
+					<option value="0" selected>0</option>					
+					<option value="1" disabled>1</option>
 				</select>
 			</div>
 		  

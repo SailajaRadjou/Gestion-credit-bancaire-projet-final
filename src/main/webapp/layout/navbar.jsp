@@ -14,6 +14,8 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
               <a class="nav-link nav_link_display active" aria-current="page" href="home">Home</a>
+              
+              <!-- getting status values from cookies & check entered username have status 1, if yes employee dropdown will be visible else not visible  -->
               <c:if test="${status==1}">
 	              <li class="nav-item dropdown">
 	                <a class="nav-link dropdown-toggle nav_link_display" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -52,6 +54,7 @@
                   <li><a class="dropdown-item" href="list-credit">Credits List</a></li>               
                 </ul>
               </li>
+              <!-- displaying logged username retrieved from cookies -->
               <span class="ms-5 fw-bold">${username}<a class="nav-link" href="login"  data-toggle="tooltip" data-placement="bottom" title="Signout"><i class="fa-solid fa-right-from-bracket fs-3 fw-bold"></i></a></span>                           
             </div>
           </div>

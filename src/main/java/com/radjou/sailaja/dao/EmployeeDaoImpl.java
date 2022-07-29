@@ -11,23 +11,33 @@ import com.radjou.sailaja.metier.Employee;
 public class EmployeeDaoImpl implements IEmployeeDao {
 
 	Employee employee;
+	
 	Connection conn = SingletonConnection.getConnection();
+	
+	//for inserting data
 	@Override
 	public Employee save(Employee emp) {
 		try {
-			PreparedStatement pStmt = conn.prepareStatement("insert into employee (username, email, password, status) values (?, ?, md5(?)), ?");
+			PreparedStatement pStmt = conn.prepareStatement("insert into employee (username, email, password, status) values (?, ?, md5(?), ?)");
 			
+			//get the values of the object & set it in the query in given order 
 			pStmt.setString(1, emp.getUserName());
 			pStmt.setString(2, emp.getEmail());			
 			pStmt.setString(3, emp.getPassword());			
 			pStmt.setInt(4, emp.getStatus());
+			
+			//execute query in the prepared statement
 			pStmt.executeUpdate();
 			System.out.println("Inserted a new record Successfully....");
 			pStmt.close();
 			
+			// for getting the id of the row last inserted
 			pStmt = conn.prepareStatement("select max(emp_id) as Last_Record from employee");
+			
+			//execute the above select query & retrieve the value in the variable rset
 			ResultSet rSet = pStmt.executeQuery();
 			
+			//for setting id & it returns the object of the lastly entered data
 			if(rSet.next()) {
 				emp.setEmpId(rSet.getInt("Last_Record"));
 				pStmt.close();
@@ -41,20 +51,25 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		return null;
 	}
 
+	//update
 	@Override
 	public Employee update(Employee emp) {
 		try {
 			PreparedStatement pStmt = conn.prepareStatement("update employee set username = ?, email = ?, password = md5(?), status = ? where emp_id = ?");
 			
+			//get the values of the object & set it in the query in given order 
 			pStmt.setInt(5, emp.getEmpId());
 			pStmt.setString(1, emp.getUserName());
 			pStmt.setString(2, emp.getEmail());			
 			pStmt.setString(3, emp.getPassword());
 			pStmt.setInt(4, emp.getStatus());
 			
+			//execute query in the prepared statement
 			pStmt.executeUpdate();
 			System.out.println("Updated Successfully....");
 			pStmt.close();
+			
+			//return the updated object
 			return this.find(emp.getEmpId());
 			
 		} catch (Exception e) {
@@ -63,16 +78,21 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		return null;
 	}
 
+	//for authentification
 	@Override
 	public Employee find(String username, String password) {
 		try {
 			PreparedStatement pStmt = conn.prepareStatement("select * from employee where username = ? and password = md5(?)");
 			
+			//get the values of the object & set it in the query in given order
 			pStmt.setString(1, username);
 			pStmt.setString(2, password);
 			
+			//execute query in the prepared statement
 			ResultSet rSet = pStmt.executeQuery();
 			System.out.println("executed");
+			
+			//set the retrieved values in the employee entity
 			if(rSet.next()) {
 				employee = new Employee();
 				employee.setEmpId(rSet.getInt("emp_id"));
@@ -92,6 +112,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		return null;
 	}
 
+	//to get the status
 	@Override
 	public int find(String username) {
 		int status;
@@ -139,6 +160,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		
 	}
 
+	//get employee list
 	@Override
 	public ArrayList<Employee> getAll() {
 		ArrayList<Employee> employees = new ArrayList<Employee>();
@@ -167,6 +189,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		return employees;
 	}
 
+	//find employee by id
 	@Override
 	public Employee find(int id) {
 		try {

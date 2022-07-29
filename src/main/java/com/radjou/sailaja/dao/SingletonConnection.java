@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SingletonConnection {
-
+	//Create a singleton connection
 	private static Connection connection;
 	
 	static {
@@ -20,7 +20,7 @@ public class SingletonConnection {
 			e.printStackTrace();
 		}
 	}
-	
+	//Chaque appelle ne puis obtenir sa propre instance.
 	public static Connection getConnection() {
 		return connection;
 	}

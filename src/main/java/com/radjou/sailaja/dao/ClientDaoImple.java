@@ -16,6 +16,7 @@ public class ClientDaoImple implements IClientDao{
 		try {
 			PreparedStatement pStmt = conn.prepareStatement("insert into client (nom, prenom, date_naissance, tel, adresse, mail, civilite) values (?, ?, ?, ?, ?, ?, ?)");
 			
+			//get the values of the object & set it in the query in given order 
 			pStmt.setString(1, c.getNom());
 			pStmt.setString(2, c.getPrenom());
 			pStmt.setDate(3, c.getDateNaissance());
@@ -24,13 +25,18 @@ public class ClientDaoImple implements IClientDao{
 			pStmt.setString(6, c.getMail());
 			pStmt.setString(7, c.getCivilite());
 			
+			//execute query in the prepared statement
 			pStmt.executeUpdate();
 			System.out.println("Inserted a new record Successfully....");
 			pStmt.close();
 			
+			// for getting the id of the row last inserted
 			pStmt = conn.prepareStatement("select max(id) as Last_Record from client");
+			
+			//execute the above select query & retrieve the value in the variable rset
 			ResultSet rSet = pStmt.executeQuery();
 			
+			//for setting id & it returns the object of the lastly entered data
 			if(rSet.next()) {
 				c.setId(rSet.getInt("Last_Record"));
 				pStmt.close();

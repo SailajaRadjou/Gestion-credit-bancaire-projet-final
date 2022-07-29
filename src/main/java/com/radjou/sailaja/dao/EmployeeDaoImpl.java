@@ -3,6 +3,7 @@ package com.radjou.sailaja.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import com.radjou.sailaja.metier.Client;
 import com.radjou.sailaja.metier.Employee;
@@ -42,7 +43,23 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 
 	@Override
 	public Employee update(Employee emp) {
-		// TODO Auto-generated method stub
+		try {
+			PreparedStatement pStmt = conn.prepareStatement("update client set username = ?, email = ?, password = md(?) where id = ?");
+			
+			pStmt.setInt(4, emp.getEmpId());
+			pStmt.setString(1, emp.getUserName());
+			pStmt.setString(2, emp.getEmail());			
+			pStmt.setString(3, emp.getPassword());
+			
+			
+			pStmt.executeUpdate();
+			System.out.println("Updated Successfully....");
+			pStmt.close();
+			return this.find(emp.getEmpId());
+			
+		} catch (Exception e) {
+			System.err.println(e);
+		}
 		return null;
 	}
 
@@ -68,6 +85,74 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			}
 			
 			pStmt.close();
+			
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		return null;
+	}
+
+	@Override
+	public int find(String username) {
+		int status;
+		try {
+			PreparedStatement pStmt = conn.prepareStatement("select status from employee where username = ?");
+			
+			pStmt.setString(1, username);
+			
+			
+			ResultSet rSet = pStmt.executeQuery();
+			System.out.println("executed");
+			
+			if(rSet.next()) {
+				
+				status = rSet.getInt("status");
+				return status;
+			}
+			
+			pStmt.close();
+			
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public int delete(Employee emp) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ArrayList<Employee> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Employee find(int id) {
+		try {
+			PreparedStatement pStmt = conn.prepareStatement("select * from employee where id = ?");
+			
+			pStmt.setInt(1, id);
+			
+			ResultSet rSet = pStmt.executeQuery();
+			
+			if(rSet.next()) {
+				employee = new Employee(); 
+				employee.setEmpId(rSet.getInt("emp_id"));
+				employee.setUserName(rSet.getString("username"));
+				employee.setEmail(rSet.getString("email"));	
+				employee.setPassword(rSet.getString("password"));
+				employee.setStatus(rSet.getInt("status"));
+				System.out.println(employee);
+				pStmt.close();
+				return employee;
+			}
+			
+			
 			
 		} catch (Exception e) {
 			System.err.println(e);

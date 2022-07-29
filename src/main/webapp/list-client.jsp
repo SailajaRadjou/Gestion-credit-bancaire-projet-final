@@ -57,7 +57,13 @@
       <td>${c.getMail()}</td>
       <td>${c.getCivilite()}</td>
       <td><a href="modify-client?idclient=${c.getId()}" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Modifier"><i class="fas fa-edit icon_disp"></i></a></td>
-      <td><a href="delete-client?idclient=${c.getId()}" class="btn btn-danger"  data-toggle="tooltip" data-placement="bottom" title="Supprimer"><i class="fa-solid fa-trash-can icon_disp"></i></a></td>
+      <td>
+      <c:if test="${status==1}">
+      	<a href="delete-client?idclient=${c.getId()}" class="btn btn-danger"  data-toggle="tooltip" data-placement="bottom" title="Supprimer">
+      		<i class="fa-solid fa-trash-can icon_disp"></i>
+      	</a>
+      </c:if>	
+      </td>
       <td><a href="client-detail?idclient=${c.getId()}" class="btn btn-info"  data-toggle="tooltip" data-placement="bottom" title="Plus d'infos"><i class="fa-solid fa-circle-info icon_disp"></i></a></td>
     </tr>
   </c:forEach>  

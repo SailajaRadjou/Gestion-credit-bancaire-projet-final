@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,9 @@ public class ClientServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
+	 Cookie cookie;
+	 String username;
+	
 	 EmployeeDaoImpl empDaoImpl = new EmployeeDaoImpl();
 	 Employee employee;
 	
@@ -39,9 +43,10 @@ public class ClientServlet extends HttpServlet {
      CreditDaoImpl creditDaoImpl = new CreditDaoImpl();
      ArrayList<Credit> credits;
      Credit credit;
-     
+    
+     int status;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		Cookie cookies[] = request.getCookies();
 		String path = request.getServletPath();
 		//System.out.println(path);
 		
@@ -67,16 +72,25 @@ public class ClientServlet extends HttpServlet {
 			break;
 			
 		case "/new-compte": 
+			
+			getCookie(cookies);
+			request.setAttribute("username", username);
+			
 			String id = request.getParameter("id");
 			request.setAttribute("clientId", id);
 			request.getRequestDispatcher("new-compte.jsp").forward(request, response);
 			break;
 			
 		case "/new-client": 
+			
+			getCookie(cookies);
+			request.setAttribute("username", username);
 			request.getRequestDispatcher("new-client.jsp").forward(request, response);
 			break;
 			
 		case "/new-credit": 
+			getCookie(cookies);
+			request.setAttribute("username", username);
 			String clientId = request.getParameter("id");
 			request.setAttribute("clientId", clientId);
 			request.getRequestDispatcher("new-credit.jsp").forward(request, response);
@@ -180,6 +194,16 @@ public class ClientServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	private String getCookie(Cookie[] cookies) {
+		for (Cookie c : cookies) {
+			if(c.getName().equals("username"))
+				username = c.getValue();
+			
+		}
+		return username;
+		
+	}
 	/******************				Employee			**********************/
 	private void registerEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -190,7 +214,10 @@ public class ClientServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		employee = empDaoImpl.find(username, password);
+		status = empDaoImpl.find(username);
+		cookie = new Cookie("username", username);
 		
+		response.addCookie(cookie);
 		if(employee == null) {
 			String msg = "Enter correct username & password";
 			request.setAttribute("message", msg);
@@ -198,8 +225,8 @@ public class ClientServlet extends HttpServlet {
 		
 		}
 		else {
-			request.setAttribute("username", employee.getUserName());
-			request.setAttribute("status", employee.getStatus());
+			request.setAttribute("username", username);
+			request.setAttribute("status", status);
 			countClient(request, response);
 		}
 	}
@@ -211,16 +238,28 @@ public class ClientServlet extends HttpServlet {
 		int countComptes = cmpdi.count();
 		int countCourants = cmpdi.countCourant();
 		int countEpargne = cmpdi.countEpargne();
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		status = empDaoImpl.find(username);
+		
 		request.setAttribute("no_of_clients", countClients);
 		request.setAttribute("no_of_comptes", countComptes);
 		request.setAttribute("comptes_courants", countCourants);
 		request.setAttribute("comptes_epargne", countEpargne);
+		request.setAttribute("username", username);
+		request.setAttribute("status", status);
 		request.getRequestDispatcher("Index.jsp").forward(request, response);
 	}
 
 	private void listClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		clients = cDaoImple.getAll();
-		request.setAttribute("clients", clients);
+		request.setAttribute("clients", clients);		
 		request.getRequestDispatcher("list-client.jsp").forward(request, response);
 	}
 	
@@ -235,6 +274,13 @@ public class ClientServlet extends HttpServlet {
 		c = new Client(nom, prenom, Date.valueOf(dateNaissance), adresse, tel, email, civilite);
 		c = cDaoImple.save(c);
 		request.setAttribute("client", c);
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		request.getRequestDispatcher("confirmation.jsp").forward(request, response);
 	}
 	
@@ -243,6 +289,13 @@ public class ClientServlet extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("idclient"));
 		c  = cDaoImple.find(id);
 		request.setAttribute("client", c);
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		request.getRequestDispatcher("update-client.jsp").forward(request, response);
 		
 	}
@@ -264,6 +317,13 @@ public class ClientServlet extends HttpServlet {
 		c = cDaoImple.update(c);
 		
 		request.setAttribute("client", c);
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		request.getRequestDispatcher("confirmation.jsp").forward(request, response);
 	}
 	
@@ -279,11 +339,25 @@ public class ClientServlet extends HttpServlet {
 		
 		c = cDaoImple.find(id);
 		request.setAttribute("client", c);
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		request.getRequestDispatcher("client-detail.jsp").forward(request, response);
 		
 	}
 	
 	private void findClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
 		clients = cDaoImple.getAll(nom, prenom);
@@ -311,6 +385,13 @@ public class ClientServlet extends HttpServlet {
 	/******************				COMPTE				**********************/
 	
 	private void findCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
 		int id = cmpdi.searchCompte(nom, prenom);
@@ -331,6 +412,12 @@ public class ClientServlet extends HttpServlet {
 	}	
 	
 	private void listCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		comptes = cmpdi.getAll();
 		if (comptes.isEmpty()) {
 			String msg = "Aucun enregistrement trouvé !";
@@ -346,6 +433,13 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void consulteCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		int id = Integer.parseInt(request.getParameter("id"));
 		c = cDaoImple.find(id);
 		comptes = cmpdi.getAll(id);
@@ -363,6 +457,13 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void saveCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String num = request.getParameter("num");
 		String dateCreation = request.getParameter("date_cree");
 		double soldes = Double.parseDouble(request.getParameter("soldes"));
@@ -401,6 +502,13 @@ public class ClientServlet extends HttpServlet {
 	
 		
 	private void modifyCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String numCompte = request.getParameter("num");
 		compte = cmpdi.find(numCompte);
 		request.setAttribute("compte", compte);
@@ -409,6 +517,13 @@ public class ClientServlet extends HttpServlet {
 	}	
 	
 	private void updateCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String num = request.getParameter("num");
 		System.out.println(num);
 		String dateCreation = request.getParameter("date_cree");
@@ -431,6 +546,13 @@ public class ClientServlet extends HttpServlet {
 	/******************				CREDIT				**********************/
 	
 	private void consulteCredit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		int id = Integer.parseInt(request.getParameter("id"));
 		c = cDaoImple.find(id);
 		credits =creditDaoImpl.getAll(id);
@@ -447,6 +569,13 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void saveCredit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String num = request.getParameter("num_credit");
 		String dateDemande = request.getParameter("date_demande");
 		double montant = Double.parseDouble(request.getParameter("montant"));
@@ -477,6 +606,13 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void listCredit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		credits = creditDaoImpl.getAll();
 		if (credits.isEmpty()) {
 			String msg = "Aucun enregistrement trouvé !";
@@ -497,6 +633,13 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void findCredit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
 		int id = creditDaoImpl.searchCredit(nom, prenom);
@@ -516,6 +659,13 @@ public class ClientServlet extends HttpServlet {
 	}	
 	
 	private void modifyCredit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String numCredit = request.getParameter("num");
 		credit = creditDaoImpl.find(numCredit);
 		request.setAttribute("credit", credit);
@@ -524,6 +674,13 @@ public class ClientServlet extends HttpServlet {
 	}	
 	
 	private void updateCredit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
 		String num = request.getParameter("num_credit");
 		String dateDemande = request.getParameter("date_demande");
 		double montant = Double.parseDouble(request.getParameter("montant"));

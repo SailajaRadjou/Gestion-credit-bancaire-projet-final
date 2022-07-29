@@ -14,6 +14,17 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
               <a class="nav-link nav_link_display active" aria-current="page" href="home">Home</a>
+              <c:if test="${status==1}">
+	              <li class="nav-item dropdown">
+	                <a class="nav-link dropdown-toggle nav_link_display" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+	                  Employees
+	                </a>
+	                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+	                  <li><a class="dropdown-item" href="new-employee">Add Employee</a></li>   
+	                  <li><a class="dropdown-item" href="list-employee">Employee List</a></li>               
+	                </ul>
+	              </li>
+	          </c:if>    
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle nav_link_display" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Clients

@@ -44,7 +44,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	@Override
 	public Employee update(Employee emp) {
 		try {
-			PreparedStatement pStmt = conn.prepareStatement("update client set username = ?, email = ?, password = md(?) where id = ?");
+			PreparedStatement pStmt = conn.prepareStatement("update client set username = ?, email = ?, password = md(?) where emp_id = ?");
 			
 			pStmt.setInt(4, emp.getEmpId());
 			pStmt.setString(1, emp.getUserName());
@@ -121,20 +121,56 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 
 	@Override
 	public int delete(Employee emp) {
-		// TODO Auto-generated method stub
+		int res;
+		try {
+			PreparedStatement pStmt = conn.prepareStatement("delete from employee where emp_id = ?");
+			
+			pStmt.setInt(1, emp.getEmpId());
+			
+			res = pStmt.executeUpdate();
+			
+			pStmt.close();
+			return res;
+			
+		} catch (Exception e) {
+			System.err.println(e);
+		}
 		return 0;
+		
 	}
 
 	@Override
 	public ArrayList<Employee> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Employee> employees = new ArrayList<Employee>();
+		
+		try {
+			PreparedStatement pStmt = conn.prepareStatement("select * from employee");
+			
+			
+			ResultSet rSet = pStmt.executeQuery();
+			
+			while (rSet.next()) {
+				
+				employee = new Employee(); 
+				employee.setEmpId(rSet.getInt("emp_id"));
+				employee.setUserName(rSet.getString("username"));
+				employee.setEmail(rSet.getString("email"));	
+				employee.setPassword(rSet.getString("password"));
+				employee.setStatus(rSet.getInt("status"));
+				employees.add(employee);
+			}
+			
+			
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		return employees;
 	}
 
 	@Override
 	public Employee find(int id) {
 		try {
-			PreparedStatement pStmt = conn.prepareStatement("select * from employee where id = ?");
+			PreparedStatement pStmt = conn.prepareStatement("select * from employee where emp_id = ?");
 			
 			pStmt.setInt(1, id);
 			

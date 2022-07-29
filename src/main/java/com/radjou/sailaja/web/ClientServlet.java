@@ -30,6 +30,7 @@ public class ClientServlet extends HttpServlet {
 	 String username;
 	
 	 EmployeeDaoImpl empDaoImpl = new EmployeeDaoImpl();
+	 ArrayList<Employee> employees;
 	 Employee employee;
 	
      ClientDaoImple cDaoImple = new ClientDaoImple();
@@ -51,6 +52,9 @@ public class ClientServlet extends HttpServlet {
 		//System.out.println(path);
 		
 		switch (path) {
+		case "/list-employee":
+			listEmployee(request, response);
+			break;
 		case "/list-client": 
 			listClient(request, response);
 			break;
@@ -229,6 +233,18 @@ public class ClientServlet extends HttpServlet {
 			request.setAttribute("status", status);
 			countClient(request, response);
 		}
+	}
+	
+	private void listEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
+		employees = empDaoImpl.getAll();
+		request.setAttribute("employees", employees);		
+		request.getRequestDispatcher("list-employees.jsp").forward(request, response);
 	}
 	
 	

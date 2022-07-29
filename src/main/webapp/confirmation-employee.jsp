@@ -10,45 +10,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
 <%@ include file = "css/style.jsp"%>
 <%@ include file = "css/footer-style.jsp"%>
-<title>Liste Employees</title>
+<title>Page Confirmation</title>
 </head>
 <body>
 <%@ include file = "layout/navbar.jsp" %>
-
-<div class="container mt-15">
-<h3 style="margin-top: 5rem; margin-bottom: 3rem;">Liste Employee</h3>
-
-
-<table class="table" style="margin-top: 15px;">
-  <thead>
-    <tr>
-      <th scope="col">#Employee Id</th>
-      <th scope="col">Username</th>
-      <th scope="col">Email Adresse</th>      
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-  <c:forEach var = 'c' items="${employees}">
-    <tr>
-      <th scope="row">${c.getEmpId()}</th>
-      <td>${c.getUserName()}</td>
-      <td>${c.getEmail()}</td>
-      
-      <td><a href="modify-employee?idemployee=${c.getEmpId()}" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Modifier"><i class="fas fa-edit icon_disp"></i></a></td>
-      <td>
-      
-      	<a href="delete-employee?idemployee=${c.getEmpId()}" class="btn btn-danger"  data-toggle="tooltip" data-placement="bottom" title="Supprimer">
-      		<i class="fa-solid fa-trash-can icon_disp"></i>
-      	</a>
-      
-      </td>
-      
-    </tr>
-  </c:forEach>  
-  </tbody>
-</table>
-
+<div class="container-lg">
+<div class="card" style="width: 45rem; margin: 10rem auto;">
+  <div class="card-header bg-light text-center">
+    <h1>Confirmation</h1>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item h4">Employee Id&emsp;:&emsp;${employee.getEmpId()}</li>
+    <li class="list-group-item h4">Username&emsp;:&emsp;${employee.getUserName()}</li>    
+    <li class="list-group-item h4">Email&emsp;:&emsp;${employee.getEmail()}</li>
+    
+  </ul>
+</div>
 </div>
 <%@ include file = "layout/footer.jsp" %>
 </body>

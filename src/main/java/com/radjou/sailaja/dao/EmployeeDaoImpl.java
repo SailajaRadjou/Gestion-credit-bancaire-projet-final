@@ -15,12 +15,12 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	@Override
 	public Employee save(Employee emp) {
 		try {
-			PreparedStatement pStmt = conn.prepareStatement("insert into employee (username, email, password) values (?, ?, md5(?))");
+			PreparedStatement pStmt = conn.prepareStatement("insert into employee (username, email, password, status) values (?, ?, md5(?)), ?");
 			
 			pStmt.setString(1, emp.getUserName());
 			pStmt.setString(2, emp.getEmail());			
 			pStmt.setString(3, emp.getPassword());			
-			
+			pStmt.setInt(4, emp.getStatus());
 			pStmt.executeUpdate();
 			System.out.println("Inserted a new record Successfully....");
 			pStmt.close();
@@ -44,13 +44,13 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	@Override
 	public Employee update(Employee emp) {
 		try {
-			PreparedStatement pStmt = conn.prepareStatement("update client set username = ?, email = ?, password = md(?) where emp_id = ?");
+			PreparedStatement pStmt = conn.prepareStatement("update employee set username = ?, email = ?, password = md5(?), status = ? where emp_id = ?");
 			
-			pStmt.setInt(4, emp.getEmpId());
+			pStmt.setInt(5, emp.getEmpId());
 			pStmt.setString(1, emp.getUserName());
 			pStmt.setString(2, emp.getEmail());			
 			pStmt.setString(3, emp.getPassword());
-			
+			pStmt.setInt(4, emp.getStatus());
 			
 			pStmt.executeUpdate();
 			System.out.println("Updated Successfully....");

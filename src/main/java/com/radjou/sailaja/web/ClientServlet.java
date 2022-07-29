@@ -92,6 +92,13 @@ public class ClientServlet extends HttpServlet {
 			request.getRequestDispatcher("new-client.jsp").forward(request, response);
 			break;
 			
+		case "/new-employee": 
+			
+			getCookie(cookies);
+			request.setAttribute("username", username);
+			request.getRequestDispatcher("new-employee.jsp").forward(request, response);
+			break;
+			
 		case "/new-credit": 
 			getCookie(cookies);
 			request.setAttribute("username", username);
@@ -100,19 +107,20 @@ public class ClientServlet extends HttpServlet {
 			request.getRequestDispatcher("new-credit.jsp").forward(request, response);
 			break;
 			
+		case "/save-employee":
+			saveEmployee(request, response);
+			break;
+			
 		case "/save-client":
 			saveClient(request, response);
-//			response.sendRedirect("list-client");
 			break;
 			
 		case "/save-compte":
 			saveCompte(request, response);
-//			response.sendRedirect("list-client");
 			break;
 			
 		case "/save-credit":
 			saveCredit(request, response);
-//			response.sendRedirect("list-client");
 			break;		
 			
 		case "/search":
@@ -137,6 +145,14 @@ public class ClientServlet extends HttpServlet {
 			findCredit(request, response);
 			break;
 			
+		case "/modify-employee":
+			modifyEmployee(request, response);
+			break;
+			
+		case "/update-employee":
+			updateEmployee(request, response);
+			break;
+			
 		case "/modify-client":
 			modifyClient(request, response);
 			break;
@@ -159,6 +175,11 @@ public class ClientServlet extends HttpServlet {
 			
 		case "/update-credit":
 			updateCredit(request, response);
+			break;
+			
+		case "/delete-employee":
+			deleteEmployee(request, response);
+			response.sendRedirect("list-employee");
 			break;
 			
 		case "/delete-client":
@@ -209,8 +230,23 @@ public class ClientServlet extends HttpServlet {
 		
 	}
 	/******************				Employee			**********************/
-	private void registerEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void saveEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String uname = request.getParameter("username");
+		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		int stat = Integer.parseInt(request.getParameter("status"));
+		employee = new Employee(uname, email, password);
+		employee.setStatus(stat);
+		employee = empDaoImpl.save(employee);
+		request.setAttribute("employee", employee);
 		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
+		request.getRequestDispatcher("confirmation-employee.jsp").forward(request, response);
 	}
 	
 	private void loginEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -245,6 +281,52 @@ public class ClientServlet extends HttpServlet {
 		employees = empDaoImpl.getAll();
 		request.setAttribute("employees", employees);		
 		request.getRequestDispatcher("list-employees.jsp").forward(request, response);
+	}
+	
+	private void modifyEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("idemployee"));
+		employee  = empDaoImpl.find(id);
+		request.setAttribute("employee", employee);
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
+		request.getRequestDispatcher("update-employee.jsp").forward(request, response);
+		
+	}
+	
+	private void updateEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("username");
+		String password = request.getParameter("password");		
+		String email = request.getParameter("email");		
+		int id = Integer.parseInt(request.getParameter("id"));
+		int stat = Integer.parseInt(request.getParameter("status"));
+		employee = empDaoImpl.find(id);
+		
+		employee = new Employee(name, email, password);
+		employee.setEmpId(id);
+		employee.setStatus(stat);
+		employee = empDaoImpl.update(employee);
+		
+		request.setAttribute("employee", employee);
+		
+		Cookie cookies[] = request.getCookies();
+		getCookie(cookies);
+		request.setAttribute("username", username);
+		status = empDaoImpl.find(username);		
+		request.setAttribute("status", status);
+		
+		request.getRequestDispatcher("confirmation-employee.jsp").forward(request, response);
+	}
+	
+	private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("idemployee"));
+		employee = new Employee();
+		employee.setEmpId(id);
+		empDaoImpl.delete(employee);
 	}
 	
 	

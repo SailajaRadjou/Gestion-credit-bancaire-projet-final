@@ -1,10 +1,29 @@
 <style>
+*, ::before,::after{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html, body{
+  position: relative;
+  width: 100%;
+  overflow-x:hidden; 
+  
+  height: 100vh;
+}
+img{
+  object-fit: cover;
+}
+
 body{
 	/*background: linear-gradient(0deg, rgba(155,157,157,1) 0%, rgba(218,217,214,1) 45%);*/
 	background: radial-gradient(circle, rgba(229,240,241,1) 26%, rgba(240,241,233,1) 82%);
 	color: #191970;
 	font-size: 1rem;
 	font-weight: bold;
+	
 }
 
 .login_image{
@@ -38,8 +57,18 @@ body{
     font-size: 1.3rem;
 }
 
+.user_display{
+	padding-right:10px !important;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+/*.container, .container-lg{	
+	height: 100vh;
+}*/
+	
 .main_container{	
-	height: 80vh;
+	height: 60vh;
 	
 	border: 5px hidden rgba(28,110,164,0.42);
 	border-radius: 0px 0px 15px 15px;
@@ -105,6 +134,39 @@ body{
 
 .card-title, .card-text, .h4{
 	color:#191970;
+}
+
+/****************************	Responsive	Mobile****************************/
+
+@media (min-width: 768px){
+	/*.row{
+		margin: 0 !important;
+	}
+	form{
+		max-width: 58rem;
+    	margin: 5rem auto;
+    }*/
+	.container{
+		max-width: 100%;
+	}
+	.nav_disp_resp{
+		flex-direction: row !important;
+		justify-content: space-around !important;
+	}
+	.span_signout{
+		display: flex;
+	    align-items: baseline;
+    }
+    .main_container{
+    	margin: 10rem auto !important;
+    }
+    .display_total{
+    	justify-content: space-evenly !important;
+    }
+  /* .card{
+   		 width: 50rem !important;
+    
+    }*/
 }
 
 </style>

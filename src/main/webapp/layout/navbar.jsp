@@ -12,7 +12,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+            <div class="navbar-nav nav_disp_resp">
               <a class="nav-link nav_link_display active" aria-current="page" href="home">Home</a>
               
               <!-- getting status values from cookies & check entered username have status 1, if yes employee dropdown will be visible else not visible  -->
@@ -55,7 +55,7 @@
                 </ul>
               </li>
               <!-- displaying logged username retrieved from cookies -->
-              <span class="ms-5 fw-bold">${username}<a class="nav-link" href="login"  data-toggle="tooltip" data-placement="bottom" title="Signout"><i class="fa-solid fa-right-from-bracket fs-3 fw-bold"></i></a></span>                           
+              <span class="ms-5 fw-bold d-flex span_signout"><p class="user_display">${username}</p><a class="nav-link" href="login"  data-toggle="tooltip" data-placement="bottom" title="Signout"><i class="fa-solid fa-right-from-bracket fs-3 fw-bold"></i></a></span>                           
             </div>
           </div>
         </div>

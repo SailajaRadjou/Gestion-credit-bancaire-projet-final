@@ -20,7 +20,7 @@
 	</div> --%>
 
 <%@ include file = "layout/navbar.jsp" %>
-<div class="container mt-5 main_container">
+<div class="container mt-5 mb-5">
 	
 	<div class="row container_display">
 	  <div class="col-sm-6 card_display">
@@ -82,7 +82,7 @@
 	    </div>
 	  </div>
 	</div>
-	<div class="d-flex justify-content-around mt-5">
+	<div class="d-flex justify-content-around mt-5 display_total">
 		<div class="card text-dark bg-light mb-3 count_card">
 		  <div class="card-header text-center">Clients</div>
 		  <div class="card-body">

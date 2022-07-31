@@ -21,7 +21,7 @@
 	<form class="row g-3" method = "post" action = "save-employee" style="margin-top: 15px;">
 		  <div class="col-md-12">
 		    <label for="inputUserName" class="form-label">Username</label>
-		    <input type="text" class="form-control" id="inputUserName" name="username">
+		    <input type="text" class="form-control" id="inputUserName" name="user-name">
 		  </div>		  
 		  
 		  <div class="col-md-12">

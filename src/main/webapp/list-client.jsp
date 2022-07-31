@@ -15,7 +15,7 @@
 <body>
 <%@ include file = "layout/navbar.jsp" %>
 
-<div class="container mt-15">
+<div class="container mt-15 table_width">
 <h3 style="margin-top: 5rem; margin-bottom: 3rem;">Liste Client</h3>
 <form method="post" action="search" style="margin-top: 15px;">
 	<div class="row g-3">

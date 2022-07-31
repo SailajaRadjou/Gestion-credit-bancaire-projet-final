@@ -234,7 +234,7 @@ public class ClientServlet extends HttpServlet {
 	
 	//inserting values in the database
 	private void saveEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String uname = request.getParameter("username");
+		String uname = request.getParameter("user-name");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		int stat = Integer.parseInt(request.getParameter("status"));

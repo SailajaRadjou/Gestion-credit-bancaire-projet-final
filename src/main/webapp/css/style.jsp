@@ -147,7 +147,11 @@ body{
     	margin: 5rem auto;
     }*/
 	.container{
-		max-width: 100%;
+		width: 100% !important;
+		max-width: 1024px;
+	}
+	.table_width{
+		width: 100%;
 	}
 	.nav_disp_resp{
 		flex-direction: row !important;
@@ -168,5 +172,6 @@ body{
     
     }*/
 }
+
 
 </style>

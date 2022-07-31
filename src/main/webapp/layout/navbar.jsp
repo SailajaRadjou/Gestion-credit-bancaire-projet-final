@@ -16,7 +16,7 @@
               <a class="nav-link nav_link_display active" aria-current="page" href="home">Home</a>
               
               <!-- getting status values from cookies & check entered username have status 1, if yes employee dropdown will be visible else not visible  -->
-              <c:if test="${status==1}">
+              <c:if test="${status==1 || username == 'admin'}">
 	              <li class="nav-item dropdown">
 	                <a class="nav-link dropdown-toggle nav_link_display" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 	                  Employees

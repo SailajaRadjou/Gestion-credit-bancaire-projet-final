@@ -58,8 +58,12 @@
       <td>${c.getTaux()}</td>
       <td>${c.getMensualite()}</td>
       <td class="etat">${c.getEtat()}</td>
-      <td><a href="modify-credit?numCredit=${c.getNumCredit()}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Modifier"><i class="fas fa-edit icon_disp"></i></a></td>
-      <td><a href="delete-credit?numCredit=${c.getNumCredit()}" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer"><i class="fa-solid fa-trash-can icon_disp"></i></a></td>      
+      <td><a href="modify-credit?num=${c.getNumCredit()}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Modifier"><i class="fas fa-edit icon_disp"></i></a></td>
+      <td>
+      	<c:if test="${status==1}">
+	      	<a href="delete-credit?num=${c.getNumCredit()}" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer"><i class="fa-solid fa-trash-can icon_disp"></i></a>
+	    </c:if>
+      </td>      
     </tr>
   </c:forEach>
   <%@ include file = "scripts/affiche-etat.jsp" %>  

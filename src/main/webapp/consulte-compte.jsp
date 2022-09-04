@@ -60,8 +60,13 @@
       <td>${c.getDecouvert()}</td>
       <td>${c.getTaux()}</td>
       <td><a href="modify-compte?num=${c.getNum()}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Modifier"><i class="fas fa-edit icon_disp"></i></a></td>
-      <td><a href="delete-compte?num=${c.getNum()}" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer"><i class="fa-solid fa-trash-can icon_disp"></i></a></td>
-      
+      <td>
+	      <c:if test="${status==1}">
+	      	<a href="delete-compte?num=${c.getNum()}" class="btn btn-danger"  data-toggle="tooltip" data-placement="bottom" title="Supprimer">
+	      		<i class="fa-solid fa-trash-can icon_disp"></i>
+	      	</a>
+	      </c:if>
+      </td>	
     </tr>
   </c:forEach> 
   </tbody>

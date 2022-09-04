@@ -1,16 +1,13 @@
 <script type="text/javascript">
 	var calc = document.getElementById('calc_button');
-
 	calc.addEventListener('click', function() {
 		let capital = document.getElementById("inputMontant").value;
 		let duree = document.getElementById("inputDuree").value;
 		let taux = document.getElementById("inputTaux").value;
-		let inputMensual = document.getElementById("inputMensualite");
-		
+		let inputMensual = document.getElementById("inputMensualite");		
 		// Convert interest rate into a decimal
 	    // eg. 6.5% = 0.065
-		taux /= 100.0;
-		
+		taux /= 100.0;		
 		// Monthly interest rate 
 	    // is the yearly rate divided by 12
 		const tauxMensual = taux / 12.0;
@@ -32,6 +29,5 @@
 				&& inputMensual.value != "NaN") {
 			document.getElementById("save_button").disabled = false;
 		}
-
 	});
 </script>
